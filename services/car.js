@@ -4,8 +4,8 @@ var sequelize = require('../common/mysql');
 const getAvgs = (elements) => {
     let total = elements.reduce((accumulator, currentValue) => {
         return {
-            price: accumulator.price + currentValue.price,
-            km: accumulator.km + currentValue.km
+            price: Number(accumulator.price) + Number(currentValue.price),
+            km: Number(accumulator.km) + Number(currentValue.km)
         };
     });
 
