@@ -1,0 +1,104 @@
+{% extends 'layout.twig' %}
+{% block body %}
+<div class="container">
+    <h1 class="mb-5">{{ title }}</h1>
+
+    <div class="summary mb-5">
+        <div class="row">
+
+            <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">${{ cars.length | number_format }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Price Average
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">${{ priceAvg | number_format }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Km Average
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ kmAvg | number_format }} km
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% if cars is not empty %}
+    <table id="cars" class="table" style="display:none;">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Car</th>
+                <th scope="col">Commune</th>
+                <th scope="col">Km</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <th scope="row"><a target="_blank" href="{{ car.url }}">{{ car.code }}</a></th scope="row">
+                <td><a target="_blank" href="{{ car.url }}">{{ car.description }}</a></td>
+                <td>{{ car.location }}</td>
+                <td class="text-right">{{ car.km | number_format(0) }} km</td>
+                <td class="text-right">${{ car.price | number_format(0) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning">No cars found.</div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function () {
+        $('#cars').DataTable({
+            responsive: true
+        });
+        $("#cars").show();
+    });
+</script>
+{% endblock %}

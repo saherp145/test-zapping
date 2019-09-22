@@ -4,11 +4,12 @@ const mysql = require('mysql2/promise');
 const AsyncLock = require('async-lock');
 const iconv = require('iconv-lite');
 
-const appConfig = require("./config.json");
+const config = require('./config');
+
 const locations = {};
 const cars = {};
 
-const MAX_PAGES = appConfig["parallelProcessingPages"];
+const MAX_PAGES = config.parallelProcessingPages;
 
 axios.interceptors.response.use(response => {
     let ctype = response.headers["content-type"];
@@ -22,7 +23,7 @@ var dbConn = null;
 const initDbConnection = async () => {
     if (!dbConn) {
         // eslint-disable-next-line require-atomic-updates
-        dbConn = await mysql.createConnection(appConfig["dbSettings"]);
+        dbConn = await mysql.createConnection(config.mysql);
     }
     return dbConn;
 };
@@ -91,7 +92,7 @@ const fetchData = async (url) => {
 };
 
 const doCollectData = async () => {
-    let $ = await fetchData(appConfig["siteUrl"]);
+    let $ = await fetchData(config.siteUrl);
 
     await initDbConnection();
 
@@ -159,7 +160,7 @@ const doCollectData = async () => {
             })
         );
 
-        console.log("scrapped pages", pages);
+        console.log("scraped pages", pages);
 
         if (pages.length) {
             nextPage = pages[pages.length - 1];
@@ -179,9 +180,4 @@ const doCollectData = async () => {
     };
 };
 
-doCollectData().then(() => {
-    console.info("Finished");
-    process.kill(0);
-});
-
-// module.exports = getResults;
+module.exports = doCollectData;
