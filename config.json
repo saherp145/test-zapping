@@ -1,0 +1,10 @@
+{
+    "siteUrl": "https://www.yapo.cl/region_metropolitana/autos",
+    "parallelProcessingPages": 10,
+    "dbSettings": {
+        "host": "localhost",
+        "user": "root",
+        "database": "zapping_test_db",
+        "password": "sapn1412"
+    }
+}
